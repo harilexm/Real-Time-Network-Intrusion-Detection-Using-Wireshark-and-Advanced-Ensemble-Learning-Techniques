@@ -1,1 +1,118 @@
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Real-Time Network Intrusion Detection</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #eef2f3;
+        padding: 40px;
+      }
+      .container {
+        max-width: 900px;
+        margin: auto;
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      h1, h3 {
+        text-align: center;
+        color: #333;
+      }
+      form {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+      label {
+        font-weight: bold;
+        color: #444;
+      }
+      input[type="file"],
+      input[type="submit"] {
+        padding: 10px;
+        font-size: 16px;
+      }
+      input[type="submit"] {
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+      input[type="submit"]:hover {
+        background-color: #0056b3;
+      }
+      .result-box {
+        margin-top: 30px;
+        padding: 20px;
+        background-color: #f7f7f7;
+        border-left: 5px solid #007BFF;
+        border-radius: 5px;
+      }
+      .result-box p {
+        margin: 5px 0;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+      }
+      th {
+        background-color: #007BFF;
+        color: white;
+      }
+      tr:nth-child() {
+        background-color: #f2f2f2;
+      }
+      .intrusion {
+        background-color: #f8d7da;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Network Intrusion Detection</h1>
+      <form method="POST" enctype="multipart/form-data">
+        <label for="file">Upload Wireshark CSV File:</label>
+        <input type="file" name="file" id="file" required>
+        <input type="submit" value="Analyze Traffic">
+      </form>
 
+      {% if results %}
+      <div class="result-box">
+        <h3>Results for: {{ filename }}</h3>
+        {% for model, outcome in results.items() %}
+          <p><strong>{{ model }}:</strong> {{ outcome }}</p>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {% if columns and detailed_data %}
+      <h3>Detailed Packet Analysis</h3>
+      <table>
+        <tr>
+          {% for col in columns %}
+            <th>{{ col }}</th>
+          {% endfor %}
+        </tr>
+        {% for row in detailed_data %}
+        <tr class="{{ 'intrusion' if row['Prediction'] == 1 else '' }}">
+          {% for col in columns %}
+            <td>{{ row[col] }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </table>
+      {% endif %}
+    </div>
+  </body>
+  </html>
