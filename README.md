@@ -3,5 +3,5 @@ This project is ...
 
 
 ## Table of Contents
-Introudction
-Models
+1. Introudction
+2. Models
